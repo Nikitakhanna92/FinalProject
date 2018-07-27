@@ -1,10 +1,6 @@
-import React, { Component } from 'react'
-import { observable } from 'mobx'
+import React from 'react'
+import { observable,autorun } from 'mobx'
 import { observer } from 'mobx-react'
-import { Div, P, Span } from 'glamorous'
-import FA from 'react-fontawesome'
-
-
 const store = observable({
   itemCount: 0,
   lastItem: null,
@@ -20,32 +16,32 @@ const handleClearCart = () => {
   store.lastItem = null
 }
 
-
+autorun(function() {
+  console.log("",store.lastItem)
+});
 
 const Cart = observer(() =>
-  <Div fontSize='2rem' color='white'>
-    <Span marginRight='0.5rem'>
+  <div style={{'fontSize':'2rem', 'color':'white'}}>
+    <span  style={{'marginRight':'0.5rem'}}>
       Shopping Cart
-    </Span>
-    <Span marginRight='0.5rem' userSelect='none'>
+    </span>
+    <span style={{'marginRight':'0.5rem','userSelect':'none'}}>
       {store.itemCount}
-    </Span>
-    <Span style={{ "font-size": "30px", "border": "black solid 1px", "background": "#ee82ee3d", "border-radius": "7px" }} onClick={handleClearCart} cursor='pointer'> Remove
-      <FA name='trash-o' />
-
-    </Span>
-  </Div>
+    </span>
+    <span style={{ "font-size": "30px", "border": "black solid 1px", "background": "#ee82ee3d", "border-radius": "7px" }} onClick={handleClearCart} cursor='pointer'> Remove
+    </span>
+  </div>
 )
 
 const Header = observer(props =>
-  <Div display='flex' background='skyblue' padding='1rem'>
-    <Div>{props.children}</Div>
-    <Div flex='1' />
-  </Div>
+  <div style={{'display':'flex', 'background':'skyblue', 'padding':'1rem'}}>
+    <div>{props.children}</div>
+    <div style = {{flex:'1'}}  />
+  </div>
 )
 
 const LastBought = observer(() =>
-<Div>{`Last bought item: ${store.lastItem || ''}`}</Div>
+<div>{`Last bought item: ${store.lastItem || ''}`}</div>
 
 )
 
@@ -56,19 +52,19 @@ export const App = observer(props =>
         <Header>
           <Cart />
         </Header>
-        {props.items.data ? props.items.data.map(item => (<Div key={item}>
-          <Div marginBottom='2rem' />
-          <Div
+        {props.items.data ? props.items.data.map(item => (<div key={item}>
+          <div style={{'marginBottom':'2rem'}} />
+          <div
             onClick={handleBuyClick(item)}
             cursor='pointer'
             userSelect='none'
           >
-            <Span style={{ "font-size": "20px" }} marginRight='0.5rem'><FA name='plus' /> + </Span>
-            <Span>Buy {item}  </Span>
-          </Div>
-          <Div marginBottom='2rem' />
+            <span style={{ "font-size": "20px","marginRight":"0.5rem" }} > + </span>
+            <span>Buy {item}  </span>
+          </div>
+          <div style={{'marginBottom':'2rem'}} />
 
-        </Div>)
+        </div>)
         ) : null}
 
         <LastBought />
